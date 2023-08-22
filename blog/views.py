@@ -1,10 +1,11 @@
-from django.forms.models import BaseModelForm
-from django.http import HttpResponse
+#from django.forms.models import BaseModelForm
+#from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from .models import Post
 from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView #Class-Based Views
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .filters import PostFilter
 
 '''
 def home(request):
@@ -21,6 +22,16 @@ class PostListView(ListView): #View for an object we will be looping over to dis
     context_object_name = 'posts' #Renaming variable per django conventions so it works with our blog home template as is
     ordering = ['-date_posted'] #change ordering of field to be reversed, so it prints from the last posted not the first posted
     paginate_by = 5
+    
+    def get_queryset(self):
+        filter = PostFilter(self.request.GET, queryset=Post.objects.all())
+        return filter.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        filter = PostFilter(self.request.GET, queryset=Post.objects.all())
+        context["filter"] = filter
+        return context
 
 
 
