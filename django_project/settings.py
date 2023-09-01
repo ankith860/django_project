@@ -139,3 +139,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #directory where uploaded files are
 MEDIA_URL = '/media/'
 # Now all media is stored in the media directory, and the various kinds of media will have their own directories in this directory.
 #   For example, the profile_pics directory will found like this: media/profile_pics
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smpt.gmail.com' 
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')

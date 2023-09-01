@@ -12,8 +12,8 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username} Profile"
     
-    def save(self): #overriding parent class save method with our own functionality
-        super().save() #runs parent class save method
+    def save(self, *args, **kwargs): #overriding parent class save method with our own functionality
+        super().save(*args, **kwargs) #runs parent class save method
         # grab and resize saved image
         
         img = Image.open(self.image.path) #opens/store current instance's image
