@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import json
-#ayo
+#test 2
 with open('/etc/config.json') as config_file:
 	config = json.load(config_file)
 
