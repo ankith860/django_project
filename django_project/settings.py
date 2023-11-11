@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import json
-#test 3
+
 with open('/etc/config.json') as config_file:
 	config = json.load(config_file)
 
@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "45.79.55.145","www.arajashe.blog"]
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
+    'api.apps.ApiConfig',
     'crispy_forms',
     'crispy_bootstrap4',
     'django.contrib.admin',
@@ -46,7 +47,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_filters'
+    'django_filters',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -152,3 +155,17 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config['EMAIL_USER']
 EMAIL_HOST_PASSWORD = config['EMAIL_PASS']
+
+
+REST_FRAMEWORK = {
+  'DEFAULT_PERMISSION_CLASSES': [
+    'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+  ],
+  'DEAFULT_AUTHENTICATION_CLASSES': (
+    'rest_framework.authentication.BasicAuthentication',
+    'rest_framework.authentication.SessionAuthentication',
+    'rest_framework.authentication.TokenAuthentication',
+  ),
+  'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+  'PAGE_SIZE': 10
+}

@@ -5,28 +5,29 @@
     <div class="col">
         <div class="card card-body mb-4">
           <form method="get">
-            {{ filter.post }}
+            {{ filter.form }}
             <button class="btn btn-primary" type="submit">Search</button>
           </form>
         </div>
     </div>
   </div>
-    
-  {%for post in posts%}
-    <article class="media content-section offset-md-2">
-      <img class = "float-start rounded-circle article-img" src = "{{post.user.profile.image.url}}">
+
+  {%for post in response%}
+    <article class="media content-section">
+      <img class = "float-start rounded-circle article-img" src = "{{post.image_url}}">
       <div class="media-body">
         <div class="article-metadata">
-          <a class="mr-2" href="{%url 'user-post' post.user.username%}">{{ post.user }}</a>
-          <small class="text-muted">{{ post.date_posted}}</small>
+          <a class="mr-2" href="{%url 'user-post' post.author%}">{{post.author}}</a>
+          <small class="text-muted">{{ post.date_posted }}</small>
         </div>
-        <h2><a class="text-decoration-none article-title" href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h2> <!-- supply the post.id so when the link is clicked the variable is passed to the path and the right view is called-->
+        <h2><a class="text-decoration-none article-title" href="{% url 'post-detail' post.id %}">{{post.title}}</a></h2> <!-- supply the post.id so when the link is clicked the variable is passed to the path and the right view is called-->
         <div>
-          <p class="article-content">{{ post.content }}</p>
+          <p class="article-content">{{post.content}}</p>
         </div>
       </div>
     </article>
   {%endfor%}
+
   {% if is_paginated %} <!--function built in by django-->
 
     {% if page_obj.has_previous %} <!--checking if page has previous pages, so checking if it isnt first page-->
