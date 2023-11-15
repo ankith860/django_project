@@ -13,6 +13,7 @@ class Profile(models.Model):
     # One to One relationship, users have 1 pofile picture, 1 profile and profile picture belongs to 1 user
     # Cascade deletion deletes the profile if the User is deleted, but not vice versa.
     image = models.ImageField(default='default.jpg', upload_to='profile_pics') #store locally
+    
 
     def __str__(self):
         return f"{self.user.username} Profile"

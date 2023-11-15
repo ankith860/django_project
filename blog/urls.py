@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import APIPostListView, PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, UserPostListView
+from .views import APIPostListView, PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, UserPostListView, CommentCreateView, CommentDeleteView, UserCommentListView, CommentUpdateView
 
 urlpatterns = [
     path('', PostListView.as_view(), name='blog-home'),
@@ -11,11 +11,8 @@ urlpatterns = [
     path('post/<int:pk>/delete', PostDeleteView.as_view(), name='post-delete'),
     path('user/<str:username>/', UserPostListView.as_view(), name='user-post'),
     path('about/', views.about, name='blog-about'),
+    path('post/<int:pk>/comment_create/', CommentCreateView.as_view(), name='comment-create'),
+    path('post/comment/<int:pk>/delete', CommentDeleteView.as_view(), name='comment-delete'),
+    path('mycomments/', UserCommentListView.as_view(), name='user-comments'),
+    path('post/comment/<int:pk>/update', CommentUpdateView.as_view(), name='comment-update'),
 ]
-
-
-'''
-.as_view() 'converts' class-based view to an actual view
-
-<pk> is the primary key of post variable, an integer. This is what DetailView expects by default. It is passed into the path when the button is clicked and the right view is called. The home.html template thus handles this in the url tag
-'''

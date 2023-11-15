@@ -1,0 +1,12 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags%}
+
+{% block content %}
+  <div class="form-group offset-md-2">
+    <form method="POST" style="color:aliceblue">
+      {% csrf_token %}
+      {{form.as_p}}
+        <button class="btn btn-outline-info" type="submit">Comment</button>
+    </form>
+  </div>
+{% endblock content %}

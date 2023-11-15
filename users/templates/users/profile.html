@@ -2,7 +2,7 @@
 {% load crispy_forms_tags%}
 
 {% block content %}
-  <div class ="content-section">
+  <div class ="content-section offset-md-2">
     <div class="media">
       <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
       <div class="media-body">
@@ -13,14 +13,13 @@
     <form method="POST" enctype="multipart/form-data"> <!--need the enctype so ensure the image is saved in the background-->
       {% csrf_token %}
       <fieldset class="form-group">
-        <legend class="border-bottom mb-4"> Join Today </legend>
         {{ u_form|crispy}} <!--using crispy forms-->
         <p></p>
         {{ p_form|crispy}}
       </fieldset>
       <div class="form-group">
-        <p></p>
-        <button class="btn btn-outline-info" type="submit">Update</button>
+        <button class="btn btn-info btn-sm mt-3 mb-2" type="submit">Update</button>
+        <a class="btn btn-danger" href="{% url 'delete_profile' user.id %}" type="submit">DELETE PROFILE</a>
       </div>
     </form>
   </div>

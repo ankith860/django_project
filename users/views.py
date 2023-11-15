@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 import requests
+from django.contrib.auth.models import User
 
 def register(request):
     '''
@@ -54,4 +55,12 @@ def profile(request):
    return render(request, 'users/profile.html', context)
 
 
+@login_required
+def delete_profile(request, pk):
+  queryset = User.objects.get(id=pk)
+  if request.method == 'POST':
+    queryset.delete()
+    messages.info(request, f"You're account has been deleted. Hope you come back!")
+    return redirect('register')
 
+  return render(request, 'users/profile_delete_confirm.html')

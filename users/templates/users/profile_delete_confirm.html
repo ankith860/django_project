@@ -1,0 +1,13 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags%}
+
+{% block content %}
+  <div class="content-section offset-md-2">
+    <form method="POST" action ="">
+      {% csrf_token %}
+      <h1>Are you sure you want to delete your profile?</h1>
+      <input class="btn btn-danger offset-md-5" type="submit" value="Yes"/>
+      <a href="{% url 'profile' %}" class="btn btn-primary">Cancel</a>
+    </form>
+  </div>
+{% endblock content %}

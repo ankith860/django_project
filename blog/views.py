@@ -1,7 +1,12 @@
 #from django.forms.models import BaseModelForm
 #from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
-from .models import Post
+from typing import Any
+from django.db import models
+from django.urls import reverse
+from django.core.paginator import Paginator
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Post, Comment
+from .forms import CommentCreationForm
 from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView #Class-Based Views
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -26,17 +31,19 @@ class PostListView(ListView):
     template_name = 'blog/home.html'
     context_object_name = 'posts' #Renaming variable per django conventions so it works with our blog home template as is
     ordering = ['-date_posted']
-    paginate_by = 5
+    paginate_by = 4
+
     
-    '''def get_queryset(self):
-        filter = PostFilter(self.request.GET, queryset=Post.objects.all())
+    def get_queryset(self):
+        filter = PostFilter(self.request.GET, queryset=Post.objects.all().order_by('-date_posted'))
         return filter.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        filter = PostFilter(self.request.GET, queryset=Post.objects.all())
+        filter = PostFilter(self.request.GET, queryset=Post.objects.all().order_by('-date_posted'))
         context["filter"] = filter
-        return context'''
+        return context
+    
 
 
 
@@ -74,7 +81,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):  #For
     fields = ['title', 'content'] 
     
     def form_valid(self, form): #setting author again/ also checking 
-        form.instance.user = self.get_object().author
+        form.instance.user = self.get_object().user
         return super().form_valid(form) #built in save method
     
     def test_func(self): #UserPassesTestMixin Will run this
@@ -98,3 +105,54 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
+
+class CommentCreateView(LoginRequiredMixin, CreateView): #Form-Based View that inherits from create view (the form) and login mixin which is like a class-based decorator that makes this view avaialble only if logged in
+    success_url = '/' 
+    model = Comment 
+    form_class = CommentCreationForm
+    template_name='blog/add_comment.html'
+
+    def form_valid(self,form):
+        form.instance.post_id = self.kwargs['pk']
+        form.instance.user = self.request.user
+        form.instance.author = self.request.user.username
+        return super().form_valid(form)
+
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView): #Form-Based View that inherits from create view (the form) and login mixin which is like a class-based decorator that makes this view avaialble only if logged in
+    model = Comment
+    template_name='blog/delete_comment.html'
+
+    def get_success_url(self):
+        comment = Comment.objects.get(id=self.kwargs['pk'])
+        return reverse('post-detail', kwargs= {'pk': comment.post_id})
+
+
+class UserCommentListView(ListView): #View for an object we will be looping over to display, this must be provided
+    model = Comment
+    template_name = 'blog/user_comments.html'
+    context_object_name = 'comments'
+    paginate_by = 10
+
+    def get_queryset(self): #modify/override query_set that this view returns
+        user=self.request.user #get username from url using shortcut 'get_object_or_404'. variables sent in are stored as kwargs and accessed by instance of class-view via self
+        return Comment.objects.filter(user=user).order_by('-date_posted') #ordering was also overriden, so we add proper ordering in return here
+
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):  #Form-Based View, uses same template as create view
+    model = Comment 
+    fields = ['content'] 
+    template_name= 'blog/update_comment.html'
+    
+    def form_valid(self, form): #setting author again/ also checking 
+        form.instance.user = self.request.user
+        return super().form_valid(form) #built in save method
+    
+    def test_func(self): #UserPassesTestMixin Will run this
+        comment = self.get_object()
+        if self.request.user == comment.user:
+            return True
+        return False
+    
+    def get_success_url(self):
+        comment = Comment.objects.get(id=self.kwargs['pk'])
+        return reverse('post-detail', kwargs= {'pk': comment.post_id})

@@ -1,4 +1,6 @@
 asgiref==3.7.2
+certifi==2023.7.22
+charset-normalizer==3.3.2
 boto3==1.28.82
 botocore==1.31.82
 crispy-bootstrap4==2022.1
@@ -6,6 +8,7 @@ distlib==0.3.6
 Django==4.2.3
 django-crispy-forms==2.0
 django-filter==23.2
+django-htmx==1.17.0
 djangorestframework==3.14.0
 django-storages==1.14.2
 filelock==3.12.2
@@ -22,3 +25,8 @@ tzdata==2023.3
 urllib3==2.0.7
 virtualenv==20.23.1
 virtualenvwrapper-win==1.2.7
+
+
+git-filter-repo==2.38.0
+idna==3.4
+pytz==2023.3.post1

@@ -1,9 +1,9 @@
 {% extends "blog/base.html" %}
 {% block content %}
-  <h1 class = "mb-3" >Posts by {{view.kwargs.username}} ({{page_obj.paginator.count}} Total Posts)</h1>
+  <h2 class = "mb-3 offset-md-2" style =color:aliceblue> Posts by {{view.kwargs.username}} ({{page_obj.paginator.count}} Total Posts)</h1>
   <!-- view.kwargs is provided by django's method which adds the kwargs context to the view instance-->
   {%for post in posts%}
-    <article class="media content-section">
+    <article class="media content-section offset-md-2">
       <img class = "float-start rounded-circle article-img" src = "{{post.user.profile.image.url}}">
       <div class="media-body">
         <div class="article-metadata">
@@ -14,6 +14,38 @@
         <div>
           <p class="article-content">{{ post.content }}</p>
         </div>
+      </div>
+      <div>
+        <hr>
+        <h5 class="article-content">Comments</h5>
+        <hr>
+        {% if not post.comments.all %}
+          No comments
+          <small class="text-muted">
+            <a href="{%url 'comment-create' post.pk%}">Add Comment</a>
+          </small>
+        {%else%}
+          <small class="text-muted">
+            <a href="{%url 'comment-create' post.pk%}">Add Comment</a>
+          </small>
+          <br>
+          {%for comment in post.comments.all%}
+            <br>
+            <strong>By {{comment.author}} - </strong>
+            <small class="text-muted">{{ comment.date_posted}}</small>
+            <br>
+            {{comment.content}}
+            {% if user == comment.user%}
+            <small class="text-muted">
+              <br>
+              <a href="{%url 'comment-delete' comment.pk%}" class="btn btn-outline-danger btn-sm">Delete</a>
+              <a href="{%url 'comment-update' comment.pk%}"class="btn btn-outline-info btn-sm">Update</a>
+            </small>
+            {%endif%}
+            <br>
+          {%endfor%}
+          <br>
+        {%endif%}
       </div>
     </article>
   {%endfor%}
