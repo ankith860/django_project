@@ -65,7 +65,7 @@ class PostDetailView(DetailView): #Made this one strictly with django default co
 
 class PostCreateView(LoginRequiredMixin, CreateView): #Form-Based View that inherits from create view (the form) and login mixin which is like a class-based decorator that makes this view avaialble only if logged in 
     model = Post 
-    fields = ['title', 'content'] #This is how you add fields in a class-based view that makes a form, not a regular form
+    fields = ['title', 'content'] 
 
     def form_valid(self, form): #Set author to current logged in user when submitting, before parent class' form_valid method is run and checks the form. 
         form.instance.author = self.request.user.username
