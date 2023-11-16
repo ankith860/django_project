@@ -1,15 +1,11 @@
 {% extends "blog/base.html" %}
 {% block content %}
 
-  <div class="row">
-    <div class="col">
-        <div class="card card-body mb-4">
-          <form method="get">
-            {{ filter.form }}
-            <button class="btn btn-primary" type="submit">Search</button>
-          </form>
-        </div>
-    </div>
+  <div class="col ps-2 mb-4 pt-2 pb-2" style="background-color: #333333;; color: #e3e3e3;">
+    <form method="get" class = "offset-md-2">
+      {{ filter.form.as_ul }}
+      <button class="btn btn-primary btn-sm" type="submit" style="display:none"></button>
+    </form>
   </div>
 
   {%for post in response%}

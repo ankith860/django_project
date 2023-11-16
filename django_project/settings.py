@@ -28,10 +28,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config['SECRET_KEY']
 #'SECRET_DJANGO_KEY'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "45.79.55.145","www.arajashe.blog"]
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+ALLOWED_HOSTS = ["127.0.0.1", "45.79.55.145", "www.arajashe.blog"]
 
 
 # Application definition
