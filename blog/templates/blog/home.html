@@ -15,7 +15,7 @@
           <a class="mr-2" href="{%url 'user-post' post.user.username%}">{{ post.user }}</a>
           <small class="text-muted">{{ post.date_posted}}</small>
         </div>
-        <h2><a class="text-decoration-none article-title" href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h2> <!-- supply the post.id so when the link is clicked the variable is passed to the path and the right view is called-->
+        <h4><a class="text-decoration-none article-title" href="{% url 'post-detail' post.pk %}">Title: {{ post.title }}</a></h4> <!-- supply the post.id so when the link is clicked the variable is passed to the path and the right view is called-->
         <hr>
         <div>
           {% if post.content|length >= 450 %}
@@ -27,7 +27,6 @@
         </div>
         <div>
           <hr>
-          <h5 class="article-content">Latest Comment</h5>
           {% if not post.comments.all %}
             No comments
             <small class="text-muted">
@@ -38,8 +37,10 @@
               <a href="{%url 'comment-create' post.pk%}">Add Comment</a>
             </small>
             <br>
+            <br>
               <strong>By {{post.comments.last.author}} - </strong>
               <small class="text-muted">{{ post.comments.last.date_posted}}</small>
+              <br>
               {{post.comments.last.content}}
               {% if user == post.comments.last.user%}
               <small class="text-muted">

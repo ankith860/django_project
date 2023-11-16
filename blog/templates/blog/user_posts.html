@@ -10,7 +10,7 @@
           <a class="mr-2" href="{%url 'user-post' post.user.username%}">{{ post.user }}</a>
           <small class="text-muted">{{ post.date_posted }}</small>
         </div>
-        <h2><a class="text-decoration-none article-title" href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h2> <!-- supply the post.id so when the link is clicked the variable is passed to the path and the right view is called-->
+        <h2><a class="text-decoration-none article-title" href="{% url 'post-detail' post.pk %}">Title: {{ post.title }}</a></h2> <!-- supply the post.id so when the link is clicked the variable is passed to the path and the right view is called-->
         <div>
           <hr>
           <p class="article-content">{{ post.content }}</p>

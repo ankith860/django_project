@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, UserPostListView, CommentCreateView, CommentDeleteView, UserCommentListView, CommentUpdateView, 
+from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, UserPostListView, CommentCreateView, CommentDeleteView, UserCommentListView, CommentUpdateView 
 #search_view, APIPostListView
 
 urlpatterns = [
