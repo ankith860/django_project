@@ -1,13 +1,12 @@
 {% extends "blog/base.html" %}
 {% block content %}
-
-    <div class="col ps-2 mb-4 offset-md-2 pt-2 pb-2" style="background-color:#556977; color: #e3e3e3;">
-      <form method="get">
-        {{ filter.form.as_ul }}
-        <button class="btn btn-primary btn-sm" type="submit">Search</button>
+    <div class="col ps-2 mb-4 pt-2 pb-2" style="background-color: #333333;; color: #e3e3e3;">
+      <form method="get" class = "offset-md-5">
+        {{ filter.form.as_p }}
+        <button class="btn btn-primary btn-sm" type="submit" style="display:none"></button>
       </form>
     </div>
-    
+
   {%for post in posts%}
     <article class="media content-section offset-md-2">
       <img class = "float-start rounded-circle article-img" src = "{{post.user.profile.image.url}}">
@@ -17,6 +16,7 @@
           <small class="text-muted">{{ post.date_posted}}</small>
         </div>
         <h2><a class="text-decoration-none article-title" href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h2> <!-- supply the post.id so when the link is clicked the variable is passed to the path and the right view is called-->
+        <hr>
         <div>
           {% if post.content|length >= 450 %}
             <p class="article-content">{{ post.content|truncatechars:450}}</p>
@@ -63,13 +63,15 @@
   {% if is_paginated %} <!--function built in by django-->
 
     {% if page_obj.has_previous %} <!--checking if page has previous pages, so checking if it isnt first page-->
-      <a class="btn btn-outline-info mb-4 offset-md-6" href="?page=1">First</a> <!--link to go to first page-->
+      <a class="btn btn-outline-info mb-4 offset-md-2" href="?page=1">First</a> <!--link to go to first page-->
       <a class="btn btn-outline-info mb-4" href="?page={{page_obj.previous_page_number}}">Previous</a> <!--link to go to previous page-->
     {%endif%}
 
     {% for num in page_obj.paginator.page_range %} <!---->
-      {% if page_obj.number == num %} <!--If the page number in the loop is the same as the page the user is on, print that link in the center-->
-        <a class="btn btn-info mb-4 offset-md-6" href="?page={{num}}">{{num}}</a> <!--link to current page-->
+      {% if page_obj.number == num and page_obj.has_previous == False%} <!--If the page number in the loop is the same as the page the user is on, print that link in the center-->
+        <a class="btn btn-info mb-4 offset-md-2" href="?page={{num}}">{{num}}</a> <!--link to current page-->
+      {% elif page_obj.number == num%} <!--If the page number in the loop is the same as the page the user is on, print that link in the center-->
+        <a class="btn btn-info mb-4" href="?page={{num}}">{{num}}</a> <!--link to current page-->
       {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'%} 
       <!--say num page_obj.number =5, the statement becomes num>2 and num<8. Or in other words, 2<num<8, excluding num = 5 because of prior if conditional-->
         <a class="btn btn-outline-info mb-4" href="?page={{num}}">{{num}}</a> <!--link to current page-->

@@ -1,9 +1,9 @@
 #from django.forms.models import BaseModelForm
 #from django.http import HttpResponse
-from typing import Any
-from django.db import models
+#from typing import Any
+#from django.db import models
 from django.urls import reverse
-from django.core.paginator import Paginator
+#from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Comment
 from .forms import CommentCreationForm
@@ -44,8 +44,26 @@ class PostListView(ListView):
         context["filter"] = filter
         return context
     
+'''
+def search_view(request):
 
+    if request.method == "GET":
 
+        query=request.GET.get('q')
+        posts = Post.objects.filter(title__contains=query)
+        template="blog/search/results-view.html"
+
+        context = {
+            "query":query,
+            "posts": posts
+        }      
+
+        if request.htmx:
+            template = "blog/search/partials/results.html"
+            return render(request, template, context)
+        
+        return render(request, template, context)
+'''
 
 class UserPostListView(ListView): #View for an object we will be looping over to display, this must be provided
     model = Post
