@@ -45,8 +45,8 @@
               {% if user == post.comments.last.user%}
               <small class="text-muted">
                 <br>
-                <a href="{%url 'comment-delete' post.pk%}" class="btn btn-danger btn-sm" style="font-size: 0.8em;">Delete</a>
-                <a href="{%url 'comment-update' post.pk%}"class="btn btn-info btn-sm" style="font-size: 0.8em;">Update</a>
+                <a href="{%url 'comment-delete' post.comments.last.pk%}" class="btn btn-danger btn-sm" style="font-size: 0.8em;">Delete</a>
+                <a href="{%url 'comment-update' post.comments.last.pk%}"class="btn btn-info btn-sm" style="font-size: 0.8em;">Update</a>
               </small>
               {%endif%}
               <br>
