@@ -13,7 +13,7 @@ from rest_framework.pagination import PageNumberPagination
 
 
 class ProfileView(APIView):
-   '''ALLOW AUTHENTICATED USER TO CONSUME CUSTOM REST API AND PERFORM READ, UPDATE, AND DELETE OPERATIONS ON THEIR PROFILE'''
+   '''Allow authenticated users to consume REST API and perform read, update, and delete operations on their profile.'''
    permission_classes = (IsAuthenticated,) # If not logged in will return HTTP 403
    
    def get(self, request):
@@ -36,7 +36,6 @@ class ProfileView(APIView):
 
 
 
-
 class AllPostListView(ListAPIView):
    '''ALL USERS AUTOMATICALLY CONSUME CUSTOM REST API TO READ BLOG POSTS'''
    queryset = Post.objects.all()
@@ -48,10 +47,10 @@ class AllPostListView(ListAPIView):
 
 
 
-
 class PostListView(APIView):
-   '''ALLOW AUTHENTICATED USER TO CONSUME CUSTOM REST API. THEY CAN READ ALL THEIR POSTS AND CREATE NEW ONES
-      ---PLANNING TO ADD PAGINATION TO THIS VIEW---   
+   ''' 
+   Allow authenticated users to consume REST API and perform read and create posts.
+   PLANNING TO ADD PAGINATION TO THIS VIEW
    '''
    permission_classes = (IsAuthenticated,)
    def get(self, request):
@@ -69,10 +68,10 @@ class PostListView(APIView):
 
 
 
-
 class PostDetailView(APIView):
-   '''ALLOW AUTHENTICATED USER TO CONSUME CUSTOM REST API. THEY CAN READ, UPDATE, DELETE ON THEIR INDUVIDUAL POSTS'''
-   permission_classes = (IsAuthenticated,) # If not logged in will return HTTP 403
+   '''Allow authenticated users to consume REST API and perform read, update, and delete operations on their induvidual posts.'''
+   permission_classes = (IsAuthenticated,)
+
    def get(self, request, id):
       query = Post.objects.get(user=self.request.user, id=id)
       serializer_class = PostSerializer(query)

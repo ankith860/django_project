@@ -1,8 +1,9 @@
+''' Convert complex data types from database, for example, to python objects for easy manipulation. Can then render them as JSON for universal transportion/parsing/access.'''
+
 from rest_framework import serializers
 from users.models import Profile
 from blog.models import Post
 
-''' CONVERT COMPLEX DATA TYPES, FROM DATABASE FOR EXAMPLE, TO PYTHON OBJECTS FOR EASY MANIPULATION. CAN THEN ALSO RENDER AS JSON. '''
 
 class ProfileSerializer(serializers.ModelSerializer):
   class Meta:

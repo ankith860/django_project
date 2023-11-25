@@ -4,10 +4,10 @@
 {% block content %}
   <div class="content-section offset-md-2">
     <form method="POST">
-      {% csrf_token %}
+      {% csrf_token %} <!-- Prevent cross-site forgery attacks -->
       <fieldset class="form-group">
         <legend class="border-bottom mb-4"> Join Today </legend>
-        {{ form| crispy }}
+        {{ form| crispy }} <!-- use crispy forms to stylize form -->
       </fieldset>
       <div class="form-group">
         <button class="btn btn-outline-info" type="submit">Sign Up</button>

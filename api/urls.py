@@ -1,8 +1,9 @@
+'''URL ROUTES TO CONSUME API, STILL IN DEVELOPMENT PHASE'''
+
 from django.urls import path
 from . import views
-from .views import ProfileView, AllPostListView, PostListView, PostDetailView
+from .views import *
 
-'''URL ROUTES TO CONSUME API, STILL IN DEVELOPMENT PHASE'''
 
 urlpatterns =[
   path('profile/', ProfileView.as_view(), name = 'api-profile'),

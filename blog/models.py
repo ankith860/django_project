@@ -3,11 +3,14 @@ from django.utils import timezone, dateformat
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+
 class Post(models.Model):
+  '''Post model's user has many to one relationship with user model via foreign key; thus, a post only has one user but one user can have many posts.''' 
+
   title = models.CharField(max_length=100)
   content = models.TextField()
   date_posted = models.CharField(default=str(dateformat.format(timezone.now(), 'Y-m-d H:i')), max_length=70) 
-  user = models.ForeignKey(User, on_delete = models.CASCADE) #this just relates the User model to the author field, but it doesn't get the currently logged in user.
+  user = models.ForeignKey(User, on_delete = models.CASCADE) #Currently logged in user provided via post creation view/template.
   author = models.TextField(default='user', max_length=100)
   image_url = models.URLField(max_length=300)
 
@@ -16,6 +19,8 @@ class Post(models.Model):
   
   def get_absolute_url(self):
     return reverse('post-detail', kwargs={'pk': self.pk}) #returns full path as a string
+
+
 
 
 class Comment(models.Model):
