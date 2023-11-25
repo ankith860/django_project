@@ -1,0 +1,42 @@
+<div>
+  <form method="get" action="/search/" hx-get="/search/" hx-trigger="keyup changed delay:200ms" hx-include="#search-type" hx-target="#typeahead-results">
+    <input type="text" name ="q" placeholder="contains or MM/DD/YY" value="{{request.GET.q}}">
+    <select name="type" id="search-type">
+  
+      {% if request.GET.type == 'Title' %}
+        <option value='Title' selected>Title</option>
+      {% else %}
+        <option value='Title'>Title</option>
+      {%endif%}
+  
+      {% if request.GET.type == 'Author'%}
+      <option value='Author' selected>Author</option>
+      {% else %}
+        <option value='Author'>Author</option>
+      {%endif%}
+  
+      {% if request.GET.type == 'Content'%}
+        <option value='Content' selected>Content</option>
+      {% else %}
+        <option value='Content'>Content</option>
+      {%endif%}
+  
+      {% if request.GET.type == 'Posted On/After'%}
+        <option value='Posted On/After' selected>Posted On/After</option>
+      {% else %}
+        <option value='Posted On/After'>Posted On/After</option>
+      {%endif%}
+  
+      {% if request.GET.type == 'Posted On/Before'%}
+      <option value='Posted On/Before' selected>Posted On/Before</option>
+      {% else %}
+        <option value='Posted On/Before'>Posted On/Before</option>
+      {%endif%}
+  
+    </select>
+    <input type="submit">
+  </form>
+  <div id="typeahead-results">
+
+  </div>
+</div>

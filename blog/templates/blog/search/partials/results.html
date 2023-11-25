@@ -1,0 +1,13 @@
+{% for object in queryset %}
+  <li><a href="{{ object.get_asbolute_url }}">{{object.name}}</a></li>
+
+{% empty %}
+  {% if query %}
+  <strong style =color:rgb(255,7,7) class="mb-4 offset-md-6">Oh no! No results found...<br></strong>
+  <br>
+  {% else %}
+  <strong style =color:rgb(255,7,7) class="mb-4 offset-md-5">Oops, looks like you forgot to enter a search....<br></strong>
+  <br>
+  {%endif%}
+
+{% endfor %}
