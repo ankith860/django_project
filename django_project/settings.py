@@ -31,8 +31,10 @@ SECRET_KEY = config['SECRET_KEY']
 
 
 
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["127.0.0.1", "45.79.55.145", "www.arajashe.blog"]
 
@@ -160,7 +162,10 @@ EMAIL_HOST = 'smpt.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config['EMAIL_USER']
+# ['EMAIL_USER']
 EMAIL_HOST_PASSWORD = config['EMAIL_PASS']
+# ['EMAIL_PASS']
+
 
 
 REST_FRAMEWORK = {
