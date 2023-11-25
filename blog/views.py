@@ -8,10 +8,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Comment
 from .forms import CommentCreationForm
 from django.contrib.auth.models import User
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView #Class-Based Views
+from django.views.generic import *
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .filters import PostFilter
 import requests
+
 
 '''
 def home(request):
@@ -21,9 +22,14 @@ def home(request):
     return render(request, 'blog/home.html', context)
 '''
 
+
+
+
 def APIPostListView(request):
     response = requests.get('http://127.0.0.1:8000/api/posts/').json()
     return render(request, 'blog/api.html', {'response': response})
+
+
 
 
 class PostListView(ListView): 
@@ -32,7 +38,6 @@ class PostListView(ListView):
     context_object_name = 'posts' #Renaming variable per django conventions so it works with our blog home template as is
     ordering = ['-date_posted']
     paginate_by = 4
-
     
     def get_queryset(self):
         filter = PostFilter(self.request.GET, queryset=Post.objects.all().order_by('-date_posted'))
@@ -44,6 +49,9 @@ class PostListView(ListView):
         context["filter"] = filter
         return context
     
+
+
+
 '''
 def search_view(request):
 
@@ -65,23 +73,32 @@ def search_view(request):
         return render(request, template, context)
 '''
 
-class UserPostListView(ListView): #View for an object we will be looping over to display, this must be provided
+
+
+
+class UserPostListView(ListView): 
     model = Post
     template_name = 'blog/user_posts.html'
     context_object_name = 'posts'
     paginate_by = 5
 
     def get_queryset(self): #modify/override query_set that this view returns
-        user = get_object_or_404(User, username=self.kwargs.get('username')) #get username from url using shortcut 'get_object_or_404'. variables sent in are stored as kwargs and accessed by instance of class-view via self
-        return Post.objects.filter(user=user).order_by('-date_posted') #ordering was also overriden, so we add proper ordering in return here
+        
+        user = get_object_or_404(User, username=self.kwargs.get('username')) #Get username from url using shortcut 'get_object_or_404'. Variables sent in are stored as kwargs and accessed by instance of class-view via self
+
+        return Post.objects.filter(user=user).order_by('-date_posted') #Ordering was overriden, fixing ordering in return statement
 
 
-class PostDetailView(DetailView): #Made this one strictly with django default conventions, did not rename varibles or paths. Will render details of a single-post when post-link is clicked or path is accessed for single post
+
+
+class PostDetailView(DetailView): #Made this one strictly with django default conventions, for use with details of a single post
     model = Post 
 
 
 
-class PostCreateView(LoginRequiredMixin, CreateView): #Form-Based View that inherits from create view (the form) and login mixin which is like a class-based decorator that makes this view avaialble only if logged in 
+
+class PostCreateView(LoginRequiredMixin, CreateView): 
+    '''Form-Based View that inherits from create view (the form) and login mixin which is like a class-based decorator that makes this view avaialble only if logged in'''
     model = Post 
     fields = ['title', 'content'] 
 
@@ -91,6 +108,7 @@ class PostCreateView(LoginRequiredMixin, CreateView): #Form-Based View that inhe
         form.instance.image_url = self.request.user.profile.image.url
 
         return super().form_valid(form) #runs parent class method
+
 
 
 
@@ -110,6 +128,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):  #For
 
 
 
+
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):  
     model = Post 
     success_url = '/'
@@ -121,10 +140,15 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
+
+
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
 
-class CommentCreateView(LoginRequiredMixin, CreateView): #Form-Based View that inherits from create view (the form) and login mixin which is like a class-based decorator that makes this view avaialble only if logged in
+
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
     success_url = '/' 
     model = Comment 
     form_class = CommentCreationForm
@@ -137,7 +161,10 @@ class CommentCreateView(LoginRequiredMixin, CreateView): #Form-Based View that i
         return super().form_valid(form)
 
 
-class CommentDeleteView(LoginRequiredMixin, DeleteView): #Form-Based View that inherits from create view (the form) and login mixin which is like a class-based decorator that makes this view avaialble only if logged in
+
+
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView): 
     model = Comment
     template_name='blog/delete_comment.html'
 
@@ -146,15 +173,20 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView): #Form-Based View that i
         return reverse('post-detail', kwargs= {'pk': comment.post_id})
 
 
+
+
 class UserCommentListView(ListView): #View for an object we will be looping over to display, this must be provided
     model = Comment
     template_name = 'blog/user_comments.html'
     context_object_name = 'comments'
     paginate_by = 10
 
-    def get_queryset(self): #modify/override query_set that this view returns
-        user=self.request.user #get username from url using shortcut 'get_object_or_404'. variables sent in are stored as kwargs and accessed by instance of class-view via self
-        return Comment.objects.filter(user=user).order_by('-date_posted') #ordering was also overriden, so we add proper ordering in return here
+    def get_queryset(self):
+        user=self.request.user 
+        return Comment.objects.filter(user=user).order_by('-date_posted')
+
+
+
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):  #Form-Based View, uses same template as create view
     model = Comment 
@@ -163,7 +195,7 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):  #
     
     def form_valid(self, form): #setting author again/ also checking 
         form.instance.user = self.request.user
-        return super().form_valid(form) #built in save method
+        return super().form_valid(form)
     
     def test_func(self): #UserPassesTestMixin Will run this
         comment = self.get_object()
