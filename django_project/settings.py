@@ -14,8 +14,8 @@ from pathlib import Path
 import os
 import json
 
-with open('/etc/config.json') as config_file:
-	config = json.load(config_file)
+# with open('/etc/config.json') as config_file: #For use with Linux server 
+# 	config = json.load(config_file)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,8 +25,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config['SECRET_KEY']
-#'SECRET_DJANGO_KEY'
+SECRET_KEY = 'SECRET_DJANGO_KEY'
+# config['SECRET_KEY']
+
+
+
+
+
 
 
 
@@ -149,20 +154,20 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'blog-home'
 LOGIN_URL = 'login'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #directory where uploaded files are saved, files not saved in database for performance reasons. This is a django specific setting that is pre-defined to specify where media is stored.
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #directory where uploaded media files are saved, media files not saved in database for performance reasons.
 MEDIA_URL = '/media/'
-# Now all media is stored in the media directory, and the various kinds of media will have their own directories in this directory.
-#   For example, the profile_pics directory will found like this: media/profile_pics
+#Now all media is stored in the root directory '/media/'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smpt.gmail.com' 
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config['EMAIL_USER']
-# ['EMAIL_USER']
-EMAIL_HOST_PASSWORD = config['EMAIL_PASS']
-# ['EMAIL_PASS']
+EMAIL_HOST_USER = ['EMAIL_USER']
+# config['EMAIL_USER']
+EMAIL_HOST_PASSWORD = ['EMAIL_PASS']
+# config['EMAIL_PASS']
+
 
 
 

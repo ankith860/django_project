@@ -1,7 +1,9 @@
 {% extends "blog/base.html" %}
 {% block content %}
+
   <article class="media content-section offset-md-2">
     <img class = "rounded-circle article-img" src = "{{object.user.profile.image.url}}">
+    
     <div class="media-body">
       <div class="article-metadata">
         <a class="mr-2" href="{%url 'user-post' post.user.username%}">{{ object.user }}</a>
@@ -17,6 +19,7 @@
       <hr>
       <p class="article-content">{{ object.content }}</p>
     </div>
+    
     <div>
       <hr>
       <h5 class="article-content">Comments</h5>
