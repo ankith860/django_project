@@ -12,10 +12,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-import json
+# import json #For use with Linux server
+from dotenv import load_dotenv
 
 # with open('/etc/config.json') as config_file: #For use with Linux server 
 # 	config = json.load(config_file)
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,26 +26,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'SECRET_DJANGO_KEY'
+SECRET_KEY = os.getenv('SECRET_DJANGO_KEY')
 # config['SECRET_KEY']
-
-
-
-
-
-
-
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
 
 ALLOWED_HOSTS = ["127.0.0.1", "45.79.55.145", "www.arajashe.blog"]
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
@@ -60,7 +55,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_htmx',
+    'storages',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,7 +70,9 @@ MIDDLEWARE = [
     'django_htmx.middleware.HtmxMiddleware',
 ]
 
+
 ROOT_URLCONF = 'django_project.urls'
+
 
 TEMPLATES = [
     {
@@ -91,23 +90,31 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'django_project.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        # 'django.db.backends.sqlite3',
+        
+        'NAME': 'Django_Postgres',
+        # BASE_DIR / 'db.sqlite3',
+
+        'USER': 'postgres',
+        'PASSWORD': os.getenv('POSTGRESQL_PASSWORD'),
+        # config['POSTGRESQL_PASSWORD']
+        'HOST': '127.0.0.1', # 'www.arajashe.blog',
+        'PORT': '5432',
     }
 }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -138,14 +145,17 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #directory where uploaded media files are saved, media files not saved in database for performance reasons.
+MEDIA_URL = '/media/' #Now all media is stored in the root directory '/media/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap4'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -154,21 +164,15 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'blog-home'
 LOGIN_URL = 'login'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #directory where uploaded media files are saved, media files not saved in database for performance reasons.
-MEDIA_URL = '/media/'
-#Now all media is stored in the root directory '/media/'
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smpt.gmail.com' 
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ['EMAIL_USER']
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')
 # config['EMAIL_USER']
-EMAIL_HOST_PASSWORD = ['EMAIL_PASS']
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
 # config['EMAIL_PASS']
-
-
 
 
 REST_FRAMEWORK = {
@@ -182,4 +186,31 @@ REST_FRAMEWORK = {
   ),
   'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
   'PAGE_SIZE': 10
+}
+
+
+DATETIME_FORMAT= r"%m/%d/%Y - %H:%M"
+L10N=False 
+USE_TZ=False
+
+
+AWS_ACCESS_KEY_ID=os.getenv('AWS_ACCESS_KEY_ID')
+# config['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY=os.getenv('AWS_SECRET_ACCESS_KEY')
+# config['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME=os.getenv('AWS_STORAGE_BUCKET_NAME')
+# config['AWS_STORAGE_BUCKET_NAME']
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
 }

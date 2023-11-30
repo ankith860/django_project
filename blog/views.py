@@ -81,6 +81,7 @@ class UserPostListView(ListView):
     template_name = 'blog/user_posts.html'
     context_object_name = 'posts'
     paginate_by = 5
+    ordering = ['-date_posted']
 
     def get_queryset(self): #modify/override query_set that this view returns
         

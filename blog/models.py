@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone, dateformat
+import datetime
 from django.contrib.auth.models import User
 from django.urls import reverse
 
@@ -9,7 +9,7 @@ class Post(models.Model):
 
   title = models.CharField(max_length=100)
   content = models.TextField()
-  date_posted = models.CharField(default=str(dateformat.format(timezone.now(), 'Y-m-d H:i')), max_length=70) 
+  date_posted = models.DateTimeField(auto_now_add=True)
   user = models.ForeignKey(User, on_delete = models.CASCADE) #Currently logged in user provided via post creation view/template.
   author = models.TextField(default='user', max_length=100)
   image_url = models.URLField(max_length=300)
@@ -28,7 +28,7 @@ class Comment(models.Model):
   user = models.ForeignKey(User, on_delete = models.CASCADE)
   author = models.CharField(max_length=100)
   content = models.TextField(max_length=500)
-  date_posted = models.CharField(default=str(dateformat.format(timezone.now(), 'Y-m-d H:i')), max_length=70) 
+  date_posted = models.DateTimeField(auto_now_add=True)
   
   def __str__(self):
     return "%s commented on %s's post '%s'" %(self.user.username, self.post.author, self.post.title)

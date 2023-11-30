@@ -20,14 +20,14 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username} Profile" #Query of Profile instance yields a human readable string
     
-    def save(self, *args, **kwargs): #overriding parent class save method
-        super().save(*args, **kwargs) #runs parent class save method
-        img = Image.open(self.image.path)
+    # def save(self, *args, **kwargs): #overriding parent class save method
+    #     super().save(*args, **kwargs) #runs parent class save method
+    #     img = Image.open(self.image.path)
 
-        if img.height > 300 or img.width > 300: #resize saved image if larger than 300x300 pixels
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
+    #     if img.height > 300 or img.width > 300: #resize saved image if larger than 300x300 pixels
+    #         output_size = (300, 300)
+    #         img.thumbnail(output_size)
+    #         img.save(self.image.path)
 
 
 
